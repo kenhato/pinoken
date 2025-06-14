@@ -15,9 +15,6 @@
         gtag('config', 'G-HJRPPJ3SW1');
     </script>
 
-    <link rel="stylesheet" href="/styles.css">
-    <script src="https://js-cdn.music.apple.com/musickit/v3/musickit.js"></script>
-    <script src="/scripts.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -31,19 +28,6 @@
 
         <p>腹痛ツイート</p>
         <button id="painLevelButton" class="button stomach"><span class="emoji">🚽</span>腹痛を報告する</button>
-
-        <p>なうぷれ（Apple Music専用）</p>
-        <div id="nowPlayingCard" class="nowplaying-card hidden">
-            <div class="nowplaying-content">
-                <img id="albumImage" src="" alt="Album Art">
-                <div class="nowplaying-text">
-                    <p>聴いてる曲：</p>
-                    <strong id="songTitle">タイトル</strong><br>
-                    <span id="artistName">アーティスト</span>
-                </div>
-            </div>
-        </div>
-        <button id="nowPlayingButton" class="button nowplaying"><span class="emoji">🎵</span>再生中の曲をツイート</button>
 
         <p>開発者への物申し</p>
         <button class="button night" onclick="window.location.href='comment.html'">開発者に物申す</button>
