@@ -211,7 +211,6 @@ async function ShowRecentSong() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ツイート生成ページ</title>
 
-    // GA4送信
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJRPPJ3SW1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -221,7 +220,6 @@ async function ShowRecentSong() {
     </script>
     <link rel="stylesheet" href="styles.css">
 
-    //MusicKit JS v3読み込み
     <script src="https://js-cdn.music.apple.com/musickit/v3/musickit.js"></script>
 </head>
 
