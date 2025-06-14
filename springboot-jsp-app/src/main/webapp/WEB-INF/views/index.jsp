@@ -45,7 +45,7 @@ try{
     });
     console.log("✅ MusicKit初期化成功！");
 
-    music = MusicKit.getInstance(); 
+     music = MusicKit.getInstance(); // グローバル変数に格納！！
 
     await ShowRecentSong();
 
