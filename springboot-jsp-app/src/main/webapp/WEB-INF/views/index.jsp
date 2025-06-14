@@ -4,6 +4,7 @@
 
 <script>
 const TOKEN_KEY = "appleDevToken";
+let music; 
 
 // JWTトークンが有効か判断。無効であれば発行
 async function isJWTTokenAvailable() {
@@ -43,6 +44,9 @@ try{
         }
     });
     console.log("✅ MusicKit初期化成功！");
+
+    music = MusicKit.getInstance(); 
+
     await ShowRecentSong();
 
 } catch (error) {
@@ -174,7 +178,6 @@ const SPECIAL_SONG = "はっぴーべりーはっぴー";
 const SPECIAL_ARTIST = "ピノキオピー";
 
 async function ShowRecentSong() {
-  const music = MusicKit.getInstance();
 
   try {
     if (!music.isAuthorized) return;
