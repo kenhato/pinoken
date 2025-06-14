@@ -66,7 +66,7 @@ function shuffleAndTweet(originalString) {
     const shuffledString = array.join('');
     const tweetContent = `${shuffledString} #休憩なう`;
 
-    const tweetUrlWeb = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetContent)}`;
+    const tweetUrlWeb = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
     window.location.href = tweetUrlWeb;
 }
 
@@ -80,7 +80,7 @@ function tweetPainReport() {
     const painLevel = document.getElementById("painLevelSelect").value;
     const tweetContent = `腹痛レベル：${painLevel}\n#ピノキオピー腹痛サークル`;
 
-    const tweetUrlWeb = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetContent)}`;
+    const tweetUrlWeb = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
     window.location.href = tweetUrlWeb;
 
     document.getElementById("painLevelDialog").close();
@@ -156,7 +156,7 @@ async function tweetNowPlaying() {
 
         const fixedUrl = nowPlaying.url.replace("?i=", "?&i=");
         const tweetContent = `#NowPlaying ${nowPlaying.title} - ${nowPlaying.artist}\n${fixedUrl}`;
-        const tweetUrlWeb = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetContent)}`;
+        const tweetUrlWeb = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
 
         console.log("ツイート内容:", tweetContent);
         window.location.href = tweetUrlWeb;
@@ -192,7 +192,7 @@ async function ShowRecentSong() {
       document.getElementById("nowPlayingCard").classList.remove("hidden");
       document.getElementById("tweetNowPlaying").onclick = () => {
         const tweetContent = `#NowPlaying ${nowPlaying.title} - ${nowPlaying.artist}\n${nowPlaying.url}`;
-        window.location.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetContent)}`;
+        window.location.href = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
       };
       document.getElementById("nowPlayingCard").classList.remove("hidden");
     }
