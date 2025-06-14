@@ -25,12 +25,15 @@ async function isJWTTokenAvailable() {
     } else {
         console.log("✅ トークンキャッシュから取得（有効）");
     }
+
+    return token;
     
 } 
 
 // MusicKit初期化関数
 async function initMusicKitWithCache(){
 try{
+    const token = await isJWTTokenAvailable();
     console.log("🎶 MusicKit初期化中…");
     await MusicKit.configure({
         developerToken: token,
