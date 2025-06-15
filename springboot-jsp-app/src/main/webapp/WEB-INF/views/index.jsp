@@ -121,7 +121,7 @@ const fetchTrack = async () => {
         artist: nowPlaying.artistName || "Unknown Artist",
         url: nowPlaying.url || "https://music.apple.com/",
         artworkUrl: nowPlaying.artwork?.url.replace('{w}x{h}', '500x500') || ""
-    };
+    };  
 };
 
 try {
@@ -162,7 +162,7 @@ async function tweetNowPlaying() {
         }
 
         const fixedUrl = nowPlaying.url.replace("?i=", "?&i=");
-        const tweetContent = `#NowPlaying ${nowPlaying.title} - ${nowPlaying.artist}\n${fixedUrl}`;
+        const tweetContent = `#NowPlaying \${nowPlaying.title} - \${nowPlaying.artist}\n\${fixedUrl}`;
         const tweetUrlWeb = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
 
         console.log("ツイート内容:", tweetContent);
