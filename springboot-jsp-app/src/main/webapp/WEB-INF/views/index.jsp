@@ -18,9 +18,8 @@ async function isJWTTokenAvailable() {
     if (!token || !expiry || now > expiry) {
         console.log("🔄 トークン未取得 or 有効期限切れ → 新規取得");
         const res = await fetch("/get/JWTToken");
-        const data = await res.json();
-
-        const inner = JSON.parse(raw.body);
+        const outer = await res.json();
+        const inner = JSON.parse(outer.body);
 
         token = inner.token;
 
