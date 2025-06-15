@@ -31,24 +31,24 @@ public class APIController {
     }
 
     private String getJWTTokenFromAws() {
-    try {
-        URL url = new URL(jwtApiUrl);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("x-api-key", jwtApiKey);
+        try {
+            URL url = new URL(jwtApiUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("x-api-key", jwtApiKey);
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
-            String response = reader.lines().collect(Collectors.joining());
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                String response = reader.lines().collect(Collectors.joining());
 
-            // Lambdaからのレスポンスが { "statusCode": 200, ..., "body": "{\"token\":\"xxx\"}" } の場合
-            JSONObject outer = new JSONObject(response);
-            JSONObject inner = new JSONObject(outer.getString("body"));
+                // Lambdaからのレスポンスが { "statusCode": 200, ..., "body": "{\"token\":\"xxx\"}" } の場合
+                JSONObject outer = new JSONObject(response);
+                JSONObject inner = new JSONObject(outer.getString("body"));
 
-            return inner.getString("token");
+                return inner.getString("token");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-    } catch (IOException e) {
-        e.printStackTrace();
-        return null;
     }
-}
 }
