@@ -15,6 +15,13 @@ import java.util.stream.Collectors;
 
 @RestController
 public class APIController {
+
+   @Value("${jwt.api.url}")
+    private String jwtApiUrl;
+
+    @Value("${jwt.api.key}")
+    private String jwtApiKey;
+
     @GetMapping("/get/JWTToken")
     public Map<String, String> getJWTToken() {
         String token = getJWTTokenFromAws(); 
@@ -23,9 +30,10 @@ public class APIController {
 
     private String getJWTTokenFromAws() {
         try {
-            URL url = new URL("https://llgctsrfu5.execute-api.ap-southeast-2.amazonaws.com/generate_JWT_token");
+            URL url = new URL(jwtApiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
+            conn.setRequestProperty("x-api-key", jwtApiKey);
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
                 String response = reader.lines().collect(Collectors.joining());
