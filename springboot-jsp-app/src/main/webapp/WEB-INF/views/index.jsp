@@ -20,7 +20,7 @@ async function isJWTTokenAvailable() {
         const res = await fetch("/get/JWTToken");
         const data = await res.json();
         console.log("レスポンスの中身:", data);
-        const token = data.body.token; 
+        const token = data.token; 
 
         localStorage.setItem(TOKEN_KEY, token);
         localStorage.setItem(EXPIRY_KEY, (now + THREE_MONTHS_MS).toString());
