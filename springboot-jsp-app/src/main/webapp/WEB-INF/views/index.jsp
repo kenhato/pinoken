@@ -102,7 +102,7 @@ const fetchTrack = async () => {
     const response = await fetch("https://api.music.apple.com/v1/me/recent/played/tracks?limit=1", {
         method: "GET",
         headers: {
-            "Authorization": `Bearer developerToken`,
+            "Authorization": `Bearer \${developerToken}`,
             "Music-User-Token": token,
             "Cache-Control": "no-cache"
         }
