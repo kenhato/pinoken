@@ -19,26 +19,4 @@ public class HomeController {
     public String index() {
         return "index";
     }
-
-@GetMapping("/get/JWTToken")
-    public Map<String, String> getJWTToken() {
-        String token = getJWTTokenFromAws(); 
-        return Map.of("token", token); 
-    }
-
-    private String getJWTTokenFromAws() {
-        try {
-            URL url = new URL("https://llgctsrfu5.execute-api.ap-southeast-2.amazonaws.com/generate_JWT_token");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
-                String response = reader.lines().collect(Collectors.joining());
-                return response.replace("{\"token\":\"", "").replace("\"}", "");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
