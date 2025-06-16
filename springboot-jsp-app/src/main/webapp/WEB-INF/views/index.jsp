@@ -19,7 +19,6 @@ async function isJWTTokenAvailable() {
         console.log("🔄 トークン未取得 or 有効期限切れ → 新規取得");
         const res = await fetch("/get/JWTToken");
         const data = await res.json();
-        console.log("レスポンスの中身:", data);
         const token = data.token; 
 
         localStorage.setItem(TOKEN_KEY, token);
@@ -72,7 +71,7 @@ function shuffleAndTweet(originalString) {
         [array[i], array[j]] = [array[j], array[i]];
     }
     const shuffledString = array.join('');
-    const tweetContent = `${shuffledString} #休憩なう`;
+    const tweetContent = `\${shuffledString} #休憩なう`;
 
     const tweetUrlWeb = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
     window.location.href = tweetUrlWeb;
@@ -86,7 +85,7 @@ function showPainLevelDialog() {
 
 function tweetPainReport() {
     const painLevel = document.getElementById("painLevelSelect").value;
-    const tweetContent = `腹痛レベル：${painLevel}\n#ピノキオピー腹痛サークル`;
+    const tweetContent = `腹痛レベル：\${painLevel}\n#ピノキオピー腹痛サークル`;
 
     const tweetUrlWeb = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
     window.location.href = tweetUrlWeb;
@@ -110,7 +109,7 @@ const fetchTrack = async () => {
     });
 
     if (!response.ok) {
-        throw new Error(`APIエラー: ${response.status}`);
+        throw new Error(`APIエラー: \${response.status}`);
     }
 
     const data = await response.json();
@@ -198,7 +197,7 @@ async function ShowRecentSong() {
       document.getElementById("artistName").textContent = nowPlaying.artist;
       document.getElementById("nowPlayingCard").classList.remove("hidden");
       document.getElementById("tweetNowPlaying").onclick = () => {
-        const tweetContent = `#NowPlaying ${nowPlaying.title} - ${nowPlaying.artist}\n${nowPlaying.url}`;
+        const tweetContent = `#NowPlaying \${nowPlaying.title} - \${nowPlaying.artist}\n\${nowPlaying.url}`;
         window.location.href = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
       };
       document.getElementById("nowPlayingCard").classList.remove("hidden");
@@ -256,10 +255,6 @@ async function ShowRecentSong() {
             </div>
         </div>
         <button id="nowPlayingButton" class="button nowplaying"><span class="emoji">🎵</span>再生中の曲をツイート</button>
-
-        <!--要望送信用導線-->
-        <p>開発者への物申し</p>
-        <button class="button night" onclick="window.location.href='comment.html'">開発者に物申す</button>
 
     </div>
 
