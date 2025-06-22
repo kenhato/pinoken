@@ -9,7 +9,7 @@ let music;
 // JWTトークンが有効か判断。無効であれば発行
 async function isJWTTokenAvailable() {
     const EXPIRY_KEY = "appleDevTokenExpiry";
-    const THREE_MONTHS_MS = 90 * 24 * 60 * 60 * 1000;
+    const ONE_HOUR_MS = 60 * 60 * 1000;
 
     let token = localStorage.getItem(TOKEN_KEY);
     const expiry = Number(localStorage.getItem(EXPIRY_KEY));
