@@ -20,7 +20,7 @@ function setSpotifyAuthenticationParameter(clientId, redirectUri, scope) {
 function tweetNowPlayingSpotify() {
 
     const clientId = "63fceae31a674af69bad8fa2d1e5bf47";
-    const redirectUri = "https://pinoken.onrender.com/";
+    const redirectUri = "https://pinoken.onrender.com/callback";
     const scope = "user-read-recently-played%20user-read-currently-playing%20user-read-playback-state";
 
     setSpotifyAuthenticationParameter(clientId, redirectUri, scope);
