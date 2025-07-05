@@ -20,6 +20,7 @@
     <script src="/js/handlePopup.js"></script>
     <script src="/js/shuffleAndTweet.js"></script>
     <script src="/js/stomachacheTweet.js"></script>
+    <script src="/js/spotifyGetAuthenticationCode.js"></script>
 </head>
 
 <body>

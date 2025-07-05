@@ -6,7 +6,7 @@ function shuffleAndTweet(originalString) {
         [array[i], array[j]] = [array[j], array[i]];
     }
     const shuffledString = array.join('');
-    const tweetContent = `\${shuffledString} #休憩なう`;
+    const tweetContent = `${shuffledString} #休憩なう`;
 
     const tweetUrlWeb = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetContent)}`;
     window.location.href = tweetUrlWeb;
