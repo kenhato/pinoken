@@ -6,35 +6,13 @@
 const TOKEN_KEY = "appleDevToken";
 let music; 
 
-// JWTトークンが有効か判断。無効であれば発行
-async function isJWTTokenAvailable() {
-    const EXPIRY_KEY = "appleDevTokenExpiry";
-    const ONE_HOUR_MS = 60 * 60 * 1000;
-
-    let token = localStorage.getItem(TOKEN_KEY);
-    const expiry = Number(localStorage.getItem(EXPIRY_KEY));
-    const now = Date.now();
-
-    if (!token || !expiry || now > expiry) {
-        console.log("🔄 トークン未取得 or 有効期限切れ → 新規取得");
-        const res = await fetch("/get/JWTToken");
-        const data = await res.json();
-        const token = data.token; 
-
-        localStorage.setItem(TOKEN_KEY, token);
-        localStorage.setItem(EXPIRY_KEY, (now + THREE_MONTHS_MS).toString());
-    } else {
-        console.log("✅ トークンキャッシュから取得（有効）");
-    }
-
-    return token;
-    
-} 
-
 // MusicKit初期化関数
 async function initMusicKitWithCache(){
 try{
-    const token = await isJWTTokenAvailable();
+    const res = await fetch("/get/JWTToken");
+    const data = await res.json();
+    const token = data.token; 
+
     console.log("🎶 MusicKit初期化中…");
     await MusicKit.configure({
         developerToken: token,
@@ -301,9 +279,6 @@ async function ShowRecentSong() {
                 document.getElementById('painLevelDialog').close();
             });
 
-            // MusicKit初期化
-            await isJWTTokenAvailable();
-            await initMusicKitWithCache();
         });
     </script>
 
