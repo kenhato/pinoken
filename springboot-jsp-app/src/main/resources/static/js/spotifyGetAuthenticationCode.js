@@ -43,7 +43,7 @@ function handleSpotifyRedirect() {
         .then(data => {
             if (data.success && data.track) {
                 // ツイートへ遷移
-                const tweetText = `${data.track} #NowPlaying`;
+                const tweetText = `#NowPlaying ${data.track}`;
                 const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
                 window.location.href = twitterUrl;
             } else {

@@ -62,11 +62,11 @@ public class SpotifyController {
         String nowPlayingUrl = "https://api.spotify.com/v1/me/player/currently-playing";
         ResponseEntity<Map> nowPlayingRes = restTemplate.exchange(nowPlayingUrl, HttpMethod.GET, apiRequest, Map.class);
 
-        String trackName = null;
+        Map<String, String> trackInfo = null;
 
         if (nowPlayingRes.getStatusCode().is2xxSuccessful() && nowPlayingRes.getBody() != null && nowPlayingRes.getBody().get("item") != null) {
             Map item = (Map) nowPlayingRes.getBody().get("item");
-            trackName = getTrackInfo(item);
+            trackInfo = getTrackInfo(item);
         } else {
             String recentUrl = "https://api.spotify.com/v1/me/player/recently-played?limit=1";
             ResponseEntity<Map> recentRes = restTemplate.exchange(recentUrl, HttpMethod.GET, apiRequest, Map.class);
@@ -74,22 +74,35 @@ public class SpotifyController {
                 List<Map> items = (List<Map>) recentRes.getBody().get("items");
                 if (!items.isEmpty()) {
                     Map track = (Map) ((Map) items.get(0).get("track"));
-                    trackName = getTrackInfo(track);
+                    trackInfo = getTrackInfo(track);
                 }
             }
         }
 
-        if (trackName != null) {
-            return ResponseEntity.ok(Map.of("success", true, "track", trackName));
+        if (trackInfo != null) {
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "track", trackInfo.get("track"),
+                "url", trackInfo.get("url")
+            ));
         } else {
             return ResponseEntity.ok(Map.of("success", false, "error", "曲情報が取得できませんでした"));
         }
+
     }
 
-    private String getTrackInfo(Map trackData) {
+    private Map<String, String> getTrackInfo(Map trackData) {
         String name = (String) trackData.get("name");
         List<Map> artists = (List<Map>) trackData.get("artists");
         String artistName = (String) artists.get(0).get("name");
-        return artistName + " - " + name;
+
+        Map<String, String> externalUrls = (Map<String, String>) trackData.get("external_urls");
+        String url = externalUrls.get("spotify");
+
+        Map<String, String> result = new HashMap<>();
+        result.put("track", name + " - " + artistName);
+        result.put("url", url);
+
+        return result;
     }
 }
