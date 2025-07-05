@@ -26,7 +26,7 @@ public class SpotifyController {
     
     private final String clientId = "63fceae31a674af69bad8fa2d1e5bf47";
     
-    private final String redirectUri = "https://pinoken.onrender.com/calback";
+    private final String redirectUri = "https://pinoken.onrender.com/callback";
 
     @PostMapping("/getMusic")
     public ResponseEntity<Map<String, Object>> handleCallback(@RequestBody Map<String, String> request, HttpSession session) {
