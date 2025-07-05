@@ -12,10 +12,14 @@ import org.springframework.util.Base64Utils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/spotify")
 @CrossOrigin
 public class SpotifyController {
+
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${spotify.client.secret}")
     private String clientSecret;
@@ -25,7 +29,7 @@ public class SpotifyController {
     private final String redirectUri = "https://pinoken.onrender.com/";
 
     @PostMapping("/getMusic")
-    public ResponseEntity<Map<String, Object>> handleCallback(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Map<String, Object>> handleCallback(@RequestBody Map<String, String> request, HttpSession session) {
         String code = request.get("code");
 
         // ① アクセストークン取得
@@ -123,5 +127,28 @@ public class SpotifyController {
         result.put("url", url);
 
         return result;
+    }
+
+    private String refreshAccessToken(String refreshToken) {
+
+        HttpHeaders headers = new HttpHeaders();
+        String credentials = clientId + ":" + clientSecret;
+        String encodedCredentials = Base64Utils.encodeToString(credentials.getBytes(StandardCharsets.UTF_8));
+        headers.set("Authorization", "Basic " + encodedCredentials);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "refresh_token");
+        params.add("refresh_token", refreshToken);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+        ResponseEntity<Map> response = restTemplate.exchange(
+            "https://accounts.spotify.com/api/token", HttpMethod.POST, request, Map.class
+        );
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return (String) response.getBody().get("access_token");
+        }
+        return null;
     }
 }
