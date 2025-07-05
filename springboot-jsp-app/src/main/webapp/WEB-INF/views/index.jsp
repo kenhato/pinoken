@@ -96,6 +96,11 @@
             });
 
         });
+
+        window.onload = () => {
+            handleSpotifyRedirect(); // リダイレクト後にSpotify認可コード読み取り
+        };
+
     </script>
 </body>
 
