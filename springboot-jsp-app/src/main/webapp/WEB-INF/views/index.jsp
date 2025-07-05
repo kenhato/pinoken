@@ -1,50 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="ja">
-
-<script>
-// 確率でポップアップ出現
-function handleClickWithPopup(callback) {
-    const randomValue = Math.random();
-    const popupChance = 0.05; // ポップアップ表示
-    if (randomValue < popupChance) {
-        alert("使ってくれてありがとう！");
-    }
-    callback();
-}
-
-// 文字をシャッフルしてツイート
-function shuffleAndTweet(originalString) {
-    const array = originalString.split('');
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    const shuffledString = array.join('');
-    const tweetContent = `\${shuffledString} #休憩なう`;
-
-    const tweetUrlWeb = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
-    window.location.href = tweetUrlWeb;
-}
-
-// 腹痛ツイート関連
-function showPainLevelDialog() {
-    const dialog = document.getElementById("painLevelDialog");
-    dialog.showModal();
-}
-
-function tweetPainReport() {
-    const painLevel = document.getElementById("painLevelSelect").value;
-    const tweetContent = `腹痛レベル：\${painLevel}\n#ピノキオピー腹痛サークル`;
-
-    const tweetUrlWeb = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
-    window.location.href = tweetUrlWeb;
-
-    document.getElementById("painLevelDialog").close();
-}
-
-</script>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,6 +17,9 @@ function tweetPainReport() {
 
     <script src="https://js-cdn.music.apple.com/musickit/v3/musickit.js"></script>
     <script src="/js/getapplemusic.js"></script>
+    <script src="/js/handlePopup.js"></script>
+    <script src="/js/shuffleAndTweet.js"></script>
+    <script src="/js/stomachacheTweet.js"></script>
 </head>
 
 <body>
@@ -141,7 +100,6 @@ function tweetPainReport() {
 
         });
     </script>
-
 </body>
 
 </html>
