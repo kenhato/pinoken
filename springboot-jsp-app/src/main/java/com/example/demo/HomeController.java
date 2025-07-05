@@ -19,4 +19,9 @@ public class HomeController {
     public String index() {
         return "index";
     }
+
+    @GetMapping("/callback")
+    public String showCallbackPage() {
+        return "callback"; 
+    }
 }
