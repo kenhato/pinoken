@@ -72,8 +72,9 @@ function tweetPainReport() {
 }
 
 async function fetchNowPlayingSong() {
+
 const music = MusicKit.getInstance(); 
-const developerToken = music.developerToken;
+const developerToken = await initMusicKitWithCache();
 
 const fetchTrack = async () => {
     const token = music.musicUserToken;
