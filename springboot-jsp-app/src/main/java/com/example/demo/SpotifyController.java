@@ -29,30 +29,36 @@ public class SpotifyController {
         String code = request.get("code");
 
         // ① アクセストークン取得
-        String tokenEndpoint = "https://accounts.spotify.com/api/token";
-        RestTemplate restTemplate = new RestTemplate();
+        // セッションにアクセストークンなければ認可コードから取得
+        if (session.getAttribute("access_token") == null) {
+            String tokenEndpoint = "https://accounts.spotify.com/api/token";
 
-        HttpHeaders tokenHeaders = new HttpHeaders();
-        String credentials = clientId + ":" + clientSecret;
-        String encodedCredentials = Base64Utils.encodeToString(credentials.getBytes(StandardCharsets.UTF_8));
-        tokenHeaders.set("Authorization", "Basic " + encodedCredentials);
-        tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            HttpHeaders tokenHeaders = new HttpHeaders();
+            String credentials = clientId + ":" + clientSecret;
+            String encodedCredentials = Base64Utils.encodeToString(credentials.getBytes(StandardCharsets.UTF_8));
+            tokenHeaders.set("Authorization", "Basic " + encodedCredentials);
+            tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        MultiValueMap<String, String> tokenParams = new LinkedMultiValueMap<>();
-        tokenParams.add("grant_type", "authorization_code");
-        tokenParams.add("code", code);
-        tokenParams.add("redirect_uri", redirectUri);
+            MultiValueMap<String, String> tokenParams = new LinkedMultiValueMap<>();
+            tokenParams.add("grant_type", "authorization_code");
+            tokenParams.add("code", code);
+            tokenParams.add("redirect_uri", redirectUri);
 
-        HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(tokenParams, tokenHeaders);
+            HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(tokenParams, tokenHeaders);
+            ResponseEntity<Map> tokenResponse = restTemplate.exchange(tokenEndpoint, HttpMethod.POST, tokenRequest, Map.class);
 
-        ResponseEntity<Map> tokenResponse = restTemplate.exchange(tokenEndpoint, HttpMethod.POST, tokenRequest, Map.class);
+            if (!tokenResponse.getStatusCode().is2xxSuccessful() || tokenResponse.getBody() == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(Map.of("success", false, "error", "トークンの取得に失敗しました"));
+            }
 
-        if (!tokenResponse.getStatusCode().is2xxSuccessful() || tokenResponse.getBody() == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("success", false, "error", "トークンの取得に失敗しました"));
+            session.setAttribute("access_token", tokenResponse.getBody().get("access_token"));
+            session.setAttribute("refresh_token", tokenResponse.getBody().get("refresh_token"));
         }
 
-        String accessToken = (String) tokenResponse.getBody().get("access_token");
+        String accessToken = (String) session.getAttribute("access_token");
+        String refreshToken = (String) session.getAttribute("refresh_token");
+
 
         // ② 曲を取得（現在再生中 → 最近再生した曲）
         HttpHeaders apiHeaders = new HttpHeaders();
@@ -61,6 +67,17 @@ public class SpotifyController {
 
         String nowPlayingUrl = "https://api.spotify.com/v1/me/player/currently-playing";
         ResponseEntity<Map> nowPlayingRes = restTemplate.exchange(nowPlayingUrl, HttpMethod.GET, apiRequest, Map.class);
+
+        // 401だったらアクセストークンが無効なのでリフレッシュする
+        if (nowPlayingRes.getStatusCode() == HttpStatus.UNAUTHORIZED && refreshToken != null) {
+            accessToken = refreshAccessToken(refreshToken);
+            session.setAttribute("access_token", accessToken); // セッションに保存
+
+            // 新しいトークンでリトライ
+            apiHeaders.set("Authorization", "Bearer " + accessToken);
+            apiRequest = new HttpEntity<>(apiHeaders);
+            nowPlayingRes = restTemplate.exchange(nowPlayingUrl, HttpMethod.GET, apiRequest, Map.class);
+        }
 
         Map<String, String> trackInfo = null;
 
@@ -78,6 +95,8 @@ public class SpotifyController {
                 }
             }
         }
+
+        
 
         if (trackInfo != null) {
             return ResponseEntity.ok(Map.of(
