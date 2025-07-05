@@ -1,4 +1,4 @@
-function setSpotifyAuthenticationParameter() {
+function setSpotifyAuthenticationParameter(clientId, redirectUri, scope) {
 
     const encodedRedirectUri = encodeURIComponent(redirectUri);
     const encodedScope = encodeURIComponent(scope);
