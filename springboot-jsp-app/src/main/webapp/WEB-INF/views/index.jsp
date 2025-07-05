@@ -117,6 +117,7 @@ function tweetPainReport() {
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
+            await initMusicKitWithCache();
             // ボタンイベント登録
             document.getElementById('shuffleButton1').addEventListener('click', () => {
                 handleClickWithPopup(() => shuffleAndTweet('休憩なう'));
