@@ -38,19 +38,12 @@
         <button id="painLevelButton" class="button stomach"><span class="emoji">🚽</span>腹痛を報告する</button>
 
         <!-- なうぷれ（Apple Music専用） -->
-        <p>なうぷれ（Apple Music専用）</p>
-        <!-- なうぷれ表示ブロック -->
-        <div id="nowPlayingCard" class="nowplaying-card hidden">
-            <div class="nowplaying-content">
-                <img id="albumImage" src="" alt="Album Art">
-                <div class="nowplaying-text">
-                    <p>聴いてる曲：</p>
-                    <strong id="songTitle">タイトル</strong><br>
-                    <span id="artistName">アーティスト</span>
-                </div>
-            </div>
-        </div>
+        <p>なうぷれ（Apple Music）</p>
         <button id="nowPlayingButton" class="button nowplaying"><span class="emoji">🎵</span>再生中の曲をツイート</button>
+
+        <!-- なうぷれ（Apple Music専用） -->
+        <p>なうぷれ（Spotify）</p>
+        <button id="nowPlayingSpotifyButton" class="button nowplaying"><span class="emoji">🎵</span>再生中の曲をツイート</button>
 
     </div>
 
@@ -92,6 +85,9 @@
             });
             document.getElementById('nowPlayingButton').addEventListener('click', () => {
                 handleClickWithPopup(tweetNowPlaying);
+            });
+            document.getElementById('nowPlayingSpotifyButton').addEventListener('click', () => {
+                handleClickWithPopup(tweetNowPlayingSpotify);
             });
             document.getElementById('tweetPainButton').addEventListener('click', tweetPainReport);
             document.getElementById('cancelPainButton').addEventListener('click', () => {

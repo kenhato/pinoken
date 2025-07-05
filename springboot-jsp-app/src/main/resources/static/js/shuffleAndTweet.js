@@ -8,6 +8,6 @@ function shuffleAndTweet(originalString) {
     const shuffledString = array.join('');
     const tweetContent = `\${shuffledString} #休憩なう`;
 
-    const tweetUrlWeb = `https://twitter.com/intent/tweet?text=\${encodeURIComponent(tweetContent)}`;
+    const tweetUrlWeb = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetContent)}`;
     window.location.href = tweetUrlWeb;
 }
