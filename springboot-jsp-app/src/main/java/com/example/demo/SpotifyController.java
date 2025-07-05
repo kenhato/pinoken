@@ -77,6 +77,11 @@ public class SpotifyController {
             accessToken = refreshAccessToken(refreshToken);
             session.setAttribute("access_token", accessToken); // セッションに保存
 
+             // ⭐ ここで新しい Authorization ヘッダーを作り直す！
+            apiHeaders = new HttpHeaders();
+            apiHeaders.set("Authorization", "Bearer " + accessToken);
+            apiRequest = new HttpEntity<>(apiHeaders);
+
             // 新しいトークンでリトライ
             apiHeaders.set("Authorization", "Bearer " + accessToken);
             apiRequest = new HttpEntity<>(apiHeaders);
