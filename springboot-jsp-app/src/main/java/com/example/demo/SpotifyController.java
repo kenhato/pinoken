@@ -18,7 +18,7 @@ import org.springframework.util.MultiValueMap;
 public class SpotifyController {
 
     @Value("${spotify.client.secret}")
-    private final String clientSecret;
+    private String clientSecret;
     
     private final String clientId = "63fceae31a674af69bad8fa2d1e5bf47";
     
